@@ -23,6 +23,9 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+	
+</script>
 <style type="text/css">
 .table {
 	border-radius: 5px;
@@ -72,20 +75,32 @@ body {
 		<h3 style="color: white;">CART INFO</h3>
 		<table class="table table-dark table-striped">
 			<tr>
-				<th scope="col">Id</th>
+
 				<th scope="col">Name</th>
 				<th scope="col">Price</th>
 				<th scope="col">Quantity</th>
+
+
 			</tr>
 			<tbody>
 				<c:forEach items="${cart}" var="emp">
 					<tr>
-						<td><c:out value="${emp.book.bookId}" /></td>
+
 						<td><c:out value="${emp.book.bookName}" /></td>
-						<td><c:out value="${emp.book.bookPrice}" /></td>
+						<td><c:out value="Rs ${emp.book.bookPrice}" /></td>
 						<td><c:out value="${emp.quantity}" /></td>
+
+
+
 					</tr>
 				</c:forEach>
+				<tr>
+					<td>Total (Tax Incl.)</td>
+
+					<td>Rs. ${sum}</td>
+
+				</tr>
+
 			</tbody>
 
 

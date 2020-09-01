@@ -1,6 +1,5 @@
 package com.cognizant.controller;
 
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.cognizant.model.Item;
 import com.cognizant.model.LoginModel;
 import com.cognizant.model.UserDetailModel;
 import com.cognizant.repository.BookDetailRepository;
@@ -84,9 +85,16 @@ public class MainController {
 	}
 
 	@GetMapping("/{userName}/cart")
-	public String showCart(@PathVariable("userName") String userName, ModelMap model){
+	public String showCart(@PathVariable("userName") String userName, @RequestParam(value = "sum", required = false)Integer sum, ModelMap model) {
 
 		List<LoginModel> list = loginRepo.findAll();
+		List<Item> cartItems = ctRepo.findAll();
+		Integer s = 0;
+		for (Item i : cartItems) {
+			s = i.getBook().getBookPrice() + s;
+		}
+		sum=s;
+		model.put("sum", sum);
 
 		model.addAttribute("list", bdRepo.findAll());
 		model.put("userName", list.get(list.size() - 1).getUserName());
@@ -100,11 +108,11 @@ public class MainController {
 		List<LoginModel> list = loginRepo.findAll();
 
 		if (model.getAttribute("cart") == null) {
-       
+
 			ctRepo.addToCart(bookId, bdRepo.findById(bookId).getBookName(), bdRepo.findById(bookId).getBookPrice(), 1);
 
 		}
-		return "redirect:/bookstore/"+list.get(list.size() - 1).getUserName();
+		return "redirect:/bookstore/" + list.get(list.size() - 1).getUserName();
 	}
 
 }
